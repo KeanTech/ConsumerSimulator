@@ -49,6 +49,7 @@ namespace ConsumerApp.Mechanics
                         Running = false;
                     }
                 }
+                return true;
             }
             catch (Exception ex)
             {
