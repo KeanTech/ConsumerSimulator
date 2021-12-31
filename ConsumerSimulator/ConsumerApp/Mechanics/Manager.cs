@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsumerApp.Mechanics
@@ -19,6 +21,11 @@ namespace ConsumerApp.Mechanics
             try
             {
                 await Producer.StartProducer();
+                while (Producer.Running)
+                {
+                    Thread.Sleep(10);
+                }
+
                 Update?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
                 //CountUpdate?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
                 await Task.Delay(10);
@@ -26,7 +33,8 @@ namespace ConsumerApp.Mechanics
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                Debug.WriteLine(ex.Message);
+                return false;
             }
 
         }

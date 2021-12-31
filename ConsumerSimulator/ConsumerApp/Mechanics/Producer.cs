@@ -40,15 +40,9 @@ namespace ConsumerApp.Mechanics
 
             try
             {
-                while (Running)
-                {
-                    var item = await Produce();
-                    Items.Push(item);
-                    if (Items.Count == 100)
-                    {
-                        Running = false;
-                    }
-                }
+                var item = await Produce();
+                Items.Push(item);
+                Running = false;
                 return true;
             }
             catch (Exception ex)

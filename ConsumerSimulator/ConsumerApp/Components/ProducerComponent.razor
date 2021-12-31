@@ -1,4 +1,5 @@
-﻿<h3>Producer</h3>
+﻿@using System.Threading
+<h3>Producer</h3>
 <p style="font:20px; color:red;">Number of item produces: @Progress</p>
 <div class="counter" style="@bar">
 </div>
@@ -19,10 +20,11 @@
 
     private async void StartProducer()
     {
-        while (Manager.Producer.ItemCount <= 100)
+        while (Manager.Producer.Items.Count <= 100)
         {
             await Manager.Loop();
-            Progress = Manager.Producer.ItemCount;
+            Progress = Manager.Producer.Items.Count;
+            Thread.Sleep(1000);
         }
 
     }
