@@ -1,0 +1,29 @@
+﻿<h3>Producer</h3>
+<p style="font:20px; color:red;">Number of item produces: @Progress</p>
+<div class="counter" style="@bar">
+</div>
+
+<button @onclick="StartProducer">Start</button>
+@code {
+    [Parameter]
+    public int Progress { get; set; }
+    private string bar => $"height:{Progress}px;";
+    private Manager Manager;
+
+    protected override void OnInitialized()
+    {
+        Manager = new();
+        //Manager.CountUpdate += (o, e) => StateHasChanged();
+        Manager.Update += (o, e) => StateHasChanged();
+    }
+
+    private async void StartProducer()
+    {
+        while (Manager.Producer.ItemCount <= 100)
+        {
+            await Manager.Loop();
+            Progress = Manager.Producer.ItemCount;
+        }
+
+    }
+}

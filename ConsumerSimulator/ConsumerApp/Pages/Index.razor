@@ -1,0 +1,16 @@
+﻿@page "/"
+
+<ProducerComponent Progress="Manager.Producer.ItemCount"></ProducerComponent>
+
+
+@code
+{
+    Manager Manager;
+
+    protected override void OnInitialized()
+    {
+        Manager = new Manager();
+        Manager.CountUpdate += (o, e) => StateHasChanged();
+    }
+
+}
