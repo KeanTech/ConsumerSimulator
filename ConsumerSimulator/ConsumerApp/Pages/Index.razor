@@ -1,7 +1,7 @@
 ﻿@page "/"
 
-<ProducerComponent Progress="Manager.Producer.Items.Count"></ProducerComponent>
-
+<ProducerComponent Progress="Manager.Producer.Items.Count" Manager="Manager"></ProducerComponent>
+<ConsumerComponent Progress="Manager.Consumer.Items.Count" Manager="Manager"></ConsumerComponent>
 
 @code
 {
