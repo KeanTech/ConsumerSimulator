@@ -1,6 +1,7 @@
 ﻿using ConsumerApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,8 +48,9 @@ namespace ConsumerApp.Mechanics
             }
             catch (Exception ex)
             {
-
-                throw new Exception(ex.Message);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                return false;
             }
         }
     }

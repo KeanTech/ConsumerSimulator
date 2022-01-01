@@ -46,7 +46,7 @@ namespace ConsumerApp.Mechanics
             {
                 Debug.WriteLine(ex.Message);
                 Debug.WriteLine(ex.StackTrace);
-                throw;
+                return false;
             }
         }
 
