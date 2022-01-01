@@ -14,12 +14,12 @@ namespace ConsumerApp.Mechanics
         public Consumer()
         {
             Items = new Stack<Item>();
-            Items.Push(new Item());
-            Items.Push(new Item());
-            Items.Push(new Item());
-            Items.Push(new Item());
-            Items.Push(new Item());
-            Items.Push(new Item());
+            //Items.Push(new Item());
+            //Items.Push(new Item());
+            //Items.Push(new Item());
+            //Items.Push(new Item());
+            //Items.Push(new Item());
+            //Items.Push(new Item());
         }
         private async Task<Item> Consume()
         {

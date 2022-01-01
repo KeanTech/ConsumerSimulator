@@ -28,12 +28,34 @@ namespace ConsumerApp.Mechanics
                     Thread.Sleep(10);
                 }
 
-                if (Producer.Items.Count > 2)
-                {
-                    await UpdateItemList();
-                }
+                await UpdateItemList();
 
                 UpdateProducer?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
+                await Task.Delay(10);
+                
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+
+        }
+
+
+        public async Task<bool> LoopConsumer()
+        {
+            try
+            {
+                await Consumer.StartConsumer();
+                while (Consumer.Running)
+                {
+                    Thread.Sleep(10);
+                }
+
+                UpdateConsumer?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumer)));
+
                 await Task.Delay(10);
                 return true;
             }
@@ -59,29 +81,6 @@ namespace ConsumerApp.Mechanics
 
             await Task.Delay(1);
             return true;
-        }
-
-        public async Task<bool> LoopConsumer()
-        {
-            try
-            {
-                await Consumer.StartConsumer();
-                while (Consumer.Running)
-                {
-                    Thread.Sleep(10);
-                }
-
-                UpdateConsumer?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumer)));
-
-                await Task.Delay(10);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return false;
-            }
-
         }
 
     }
