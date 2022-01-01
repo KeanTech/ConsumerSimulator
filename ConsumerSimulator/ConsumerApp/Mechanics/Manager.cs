@@ -10,27 +10,12 @@ namespace ConsumerApp.Mechanics
     {
         public Producer Producer { get; set; }
         public Consumer Consumer { get; set; }
-        public EventHandler CountUpdate { get; set; }
         public event PropertyChangedEventHandler UpdateProducer;
         public event PropertyChangedEventHandler UpdateConsumer;
         public Manager()
         {
             Producer = new Producer();
             Consumer = new Consumer();
-        }
-
-        public void Start()
-        {
-            new Thread(async () => 
-            {
-                await LoopProducer();
-            }).Start();
-
-            new Thread(async () => 
-            {
-                await LoopConsumer();
-            }).Start();
-
         }
 
         public async Task<bool> LoopProducer()
@@ -43,8 +28,12 @@ namespace ConsumerApp.Mechanics
                     Thread.Sleep(10);
                 }
 
+                if (Producer.Items.Count > 2)
+                {
+                    await UpdateItemList();
+                }
+
                 UpdateProducer?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
-                //CountUpdate?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
                 await Task.Delay(10);
                 return true;
             }
@@ -55,6 +44,23 @@ namespace ConsumerApp.Mechanics
             }
 
         }
+
+        private async Task<bool> UpdateItemList()
+        {
+            var itemList = Producer.Items.ToArray();
+            if (Consumer.Items.Count <= 100)
+                for (int i = 0; i < Producer.Items.Count; i++)
+                {
+                    Consumer.Items.Push(itemList[i]);
+                    Producer.Items.Pop();
+                    UpdateConsumer?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumer)));
+                    UpdateProducer?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
+                }
+
+            await Task.Delay(1);
+            return true;
+        }
+
         public async Task<bool> LoopConsumer()
         {
             try
@@ -66,7 +72,7 @@ namespace ConsumerApp.Mechanics
                 }
 
                 UpdateConsumer?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumer)));
-                //CountUpdate?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
+
                 await Task.Delay(10);
                 return true;
             }

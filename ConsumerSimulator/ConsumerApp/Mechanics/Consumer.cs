@@ -1,5 +1,7 @@
 ﻿using ConsumerApp.Models;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ConsumerApp.Mechanics
@@ -19,15 +21,6 @@ namespace ConsumerApp.Mechanics
             Items.Push(new Item());
             Items.Push(new Item());
         }
-
-        public async Task<bool> StartConsumer()
-        {
-            Running = true;
-            Item = await Consume();
-            Running = false;
-            return true;
-        }
-
         private async Task<Item> Consume()
         {
             Task<Item> task = Task<Item>.Factory.StartNew(() =>
@@ -36,8 +29,26 @@ namespace ConsumerApp.Mechanics
                 var item = Items.Pop();
                 return item;
             });
-             
+
             return await Task.FromResult(await task);
         }
+
+        public async Task<bool> StartConsumer()
+        {
+            try
+            {
+                Running = true;
+                Item = await Consume();
+                Running = false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                throw;
+            }
+        }
+
     }
 }

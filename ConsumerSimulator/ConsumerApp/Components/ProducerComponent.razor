@@ -1,10 +1,17 @@
 ﻿@using System.Threading
 <h3>Producer</h3>
 <p style="font:20px; color:red;">Number of item produces: @Progress</p>
-<div class="counter" style="@bar">
+
+<div style="height:100px;">
+    <div class="counter" style="@bar; max-height:100px;">
+    </div>
+
 </div>
 
-<button @onclick="StartProducer">Start</button>
+<div>
+    <button @onclick="StartProducer">Start</button>
+</div>
+
 @code {
     [Parameter]
     public int Progress { get; set; }
@@ -12,20 +19,15 @@
     [Parameter]
     public Manager Manager { get; set; }
 
-    protected override void OnInitialized()
-    {
-        //Manager.CountUpdate += (o, e) => StateHasChanged();
-        Manager.UpdateProducer += (o, e) => StateHasChanged();
-    }
-
     private async void StartProducer()
     {
         while (Manager.Producer.Items.Count <= 100)
         {
             await Manager.LoopProducer();
             Progress = Manager.Producer.Items.Count;
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
         }
 
+        Progress = Manager.Producer.Items.Count;
     }
 }

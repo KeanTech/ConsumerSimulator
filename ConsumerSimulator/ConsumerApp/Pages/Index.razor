@@ -1,7 +1,11 @@
 ﻿@page "/"
 
-<ProducerComponent Progress="Manager.Producer.Items.Count" Manager="Manager"></ProducerComponent>
-<ConsumerComponent Progress="Manager.Consumer.Items.Count" Manager="Manager"></ConsumerComponent>
+<UiContainerComponent
+Manager="Manager"
+ConsumerProgress="Manager.Consumer.Items.Count"
+ProducerProgress="Manager.Producer.Items.Count">
+</UiContainerComponent>
+
 
 @code
 {
@@ -10,7 +14,8 @@
     protected override void OnInitialized()
     {
         Manager = new Manager();
-        Manager.CountUpdate += (o, e) => StateHasChanged();
+        Manager.UpdateConsumer += (o, e) => StateHasChanged();
+        Manager.UpdateProducer += (o, e) => StateHasChanged();
     }
 
 }

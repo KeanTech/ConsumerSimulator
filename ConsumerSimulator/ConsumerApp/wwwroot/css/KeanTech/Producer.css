@@ -1,6 +1,7 @@
 ﻿.counter{
     height: 100px;
     width: 35px;
-    border: 2px solid, black;
+
+    border: 2px solid, orange;
     background: rgb(6, 54, 108);
 }

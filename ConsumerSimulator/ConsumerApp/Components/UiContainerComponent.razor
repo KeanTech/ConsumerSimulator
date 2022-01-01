@@ -1,0 +1,17 @@
+﻿<div style="background: darkgray; height: 200px; width: 350px;">
+    <ProducerComponent Progress="ProducerProgress" Manager="Manager"></ProducerComponent>
+</div>
+
+<div style="background: darkgray; height: 200px; width: 350px;">
+    <ConsumerComponent Progress="ConsumerProgress" Manager="Manager"></ConsumerComponent>
+</div>
+
+@code {
+    [Parameter]
+    public Manager Manager { get; set; }
+    [Parameter]
+    public int ProducerProgress { get; set; }
+    [Parameter]
+    public int ConsumerProgress { get; set; }
+
+}
