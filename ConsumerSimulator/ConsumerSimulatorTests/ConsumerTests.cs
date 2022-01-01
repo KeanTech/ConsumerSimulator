@@ -29,5 +29,15 @@ namespace ConsumerSimulatorTests
 
             Assert.Equal(expected, actual);
         }
+        [Fact]
+        public async void StartConsumer_ShouldReturnTrue() 
+        {
+            Consumer consumer = new();
+            Assert.False(await consumer.StartConsumer());
+            consumer.Items.Push(new Item());
+
+            Assert.True(await consumer.StartConsumer());
+        } 
+
     }
 }
