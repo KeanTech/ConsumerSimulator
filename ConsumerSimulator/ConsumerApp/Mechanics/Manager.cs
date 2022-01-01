@@ -18,6 +18,22 @@ namespace ConsumerApp.Mechanics
             Consumer = new Consumer();
         }
 
+        public async Task<bool> RunAsync()
+        {
+            Random random = new Random();
+            var produceNumberOfItems = random.Next(100);
+            while (Producer.Items.Count < produceNumberOfItems)
+                await LoopProducer();
+            Debug.WriteLine("Producer Done");
+
+            await UpdateItemList();
+            var consumeNumberOfItems = random.Next(Consumer.Items.Count);
+            while (Consumer.Items.Count > consumeNumberOfItems)
+                await LoopConsumer();
+            Debug.WriteLine("Consumer Done");
+            return true;
+        }
+
         public async Task<bool> LoopProducer()
         {
             try
@@ -28,11 +44,10 @@ namespace ConsumerApp.Mechanics
                     Thread.Sleep(10);
                 }
 
-                await UpdateItemList();
-
                 UpdateProducer?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
                 await Task.Delay(10);
                 
+
                 return true;
             }
             catch (Exception ex)
@@ -69,15 +84,12 @@ namespace ConsumerApp.Mechanics
 
         private async Task<bool> UpdateItemList()
         {
-            var itemList = Producer.Items.ToArray();
-            if (Consumer.Items.Count <= 100)
-                for (int i = 0; i < Producer.Items.Count; i++)
-                {
-                    Consumer.Items.Push(itemList[i]);
-                    Producer.Items.Pop();
-                    UpdateConsumer?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumer)));
-                    UpdateProducer?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
-                }
+            while (Producer.Items.Count > 1 && Consumer.Items.Count < 100)
+            {
+                Consumer.Items.Push(Producer.Items.Pop());
+                UpdateConsumer?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumer)));
+                UpdateProducer?.Invoke(this, new PropertyChangedEventArgs(nameof(Producer)));
+            }
 
             await Task.Delay(1);
             return true;

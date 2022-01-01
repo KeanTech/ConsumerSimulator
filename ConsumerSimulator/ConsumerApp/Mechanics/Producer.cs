@@ -10,6 +10,7 @@ namespace ConsumerApp.Mechanics
     public class Producer
     {
         public Stack<Item> Items { get; set; }
+        public int ItemCount { get; set; }
         public bool Running { get; set; }
 
         public Producer()
@@ -28,7 +29,7 @@ namespace ConsumerApp.Mechanics
                 Task.Delay(100);
                 return new Item();
             });
-
+            ItemCount++;
             return await Task.FromResult(await item);
         }
 

@@ -10,6 +10,7 @@ namespace ConsumerApp.Mechanics
     {
         public Stack<Item> Items { get; set; }
         public Item Item { get; set; }
+        public int ItemCount { get; set; }
         public bool Running { get; set; }
         public Consumer()
         {
@@ -25,11 +26,11 @@ namespace ConsumerApp.Mechanics
         {
             Task<Item> task = Task<Item>.Factory.StartNew(() =>
             {
-                Task.Delay(100);
+                Task.Delay(200);
                 var item = Items.Pop();
                 return item;
             });
-
+            ItemCount++;
             return await Task.FromResult(await task);
         }
 

@@ -3,8 +3,8 @@
 <div class="list-group">
 
     <div class="bg-info" style="height:200px; ">
-        <p style="font:20px;">Number of items in stack: @Progress</p>
-        <p style="font:20px;">Number of items produced: @itemCount</p>
+        <p style="font:20px;">Number of items in stack: @Manager.Producer.Items.Count</p>
+        <p style="font:20px;">Number of items produced: @Manager.Producer.ItemCount</p>
         <div class="counter" style="@bar; max-height:100px;">
         </div>
 
@@ -23,17 +23,13 @@
     public int Progress { get; set; }
 
     private string bar => $"height:{Progress}px;";
-    private int itemCount;
+    
     private async void StartProducer()
     {
         while (Manager.Producer.Items.Count <= 100)
         {
-            await Manager.LoopProducer();
-            Progress = Manager.Producer.Items.Count;
-            itemCount++;
-            Thread.Sleep(100);
+            await Manager.RunAsync();
+            Thread.Sleep(1000);
         }
-
-        Progress = Manager.Producer.Items.Count;
     }
 }

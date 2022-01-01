@@ -2,33 +2,18 @@
 <h3 class="text-center">Consumer</h3>
 
 <div class="bg-info" style="height:200px;">
-    <p style="font:20px;">Number of items in stack: @Progress</p>
-    <p style="font:20px;">Number of items consumed: @itemCount</p>
+    <p style="font:20px;">Number of items in stack: @Manager.Consumer.Items.Count</p>
+    <p style="font:20px;">Number of items consumed: @Manager.Consumer.ItemCount</p>
     <div class="counter" style="@bar; max-height:100px;">
     </div>
 
 </div>
-<div class="mt-2 text-center">
-    <button @onclick="StartConsumer">Start</button>
-</div>
+
 @code {
     [Parameter]
     public int Progress { get; set; }
-    private string bar => $"height:{Progress}px;";
-    private int itemCount;
     [Parameter]
     public Manager Manager { get; set; }
 
-    private async void StartConsumer()
-    {
-        while (Manager.Consumer.Items.Count > 1)
-        {
-            await Manager.LoopConsumer();
-            Progress = Manager.Consumer.Items.Count;
-            itemCount++;
-            Thread.Sleep(100);
-        }
-        Progress = Manager.Consumer.Items.Count;
-
-    }
+    private string bar => $"height:{Progress}px;";
 }
