@@ -1,30 +1,36 @@
 ﻿@using System.Threading
-<h3>Producer</h3>
-<p style="font:20px; color:red;">Number of item produces: @Progress</p>
+<h3 class="text-center">Producer</h3>
+<div class="list-group">
 
-<div style="height:100px;">
-    <div class="counter" style="@bar; max-height:100px;">
+    <div class="bg-info" style="height:200px; ">
+        <p style="font:20px;">Number of items in stack: @Progress</p>
+        <p style="font:20px;">Number of items produced: @itemCount</p>
+        <div class="counter" style="@bar; max-height:100px;">
+        </div>
+
     </div>
 
 </div>
 
-<div>
-    <button @onclick="StartProducer">Start</button>
-</div>
+    <div class="mt-2 text-center">
+        <button @onclick="StartProducer">Start</button>
+    </div>
 
 @code {
     [Parameter]
-    public int Progress { get; set; }
-    private string bar => $"height:{Progress}px;";
-    [Parameter]
     public Manager Manager { get; set; }
+    [Parameter]
+    public int Progress { get; set; }
 
+    private string bar => $"height:{Progress}px;";
+    private int itemCount;
     private async void StartProducer()
     {
         while (Manager.Producer.Items.Count <= 100)
         {
             await Manager.LoopProducer();
             Progress = Manager.Producer.Items.Count;
+            itemCount++;
             Thread.Sleep(100);
         }
 

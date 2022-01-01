@@ -1,20 +1,21 @@
 ﻿@using System.Threading
-<h3>Consumer</h3>
+<h3 class="text-center">Consumer</h3>
 
-<p style="font:20px; color:red;">Number of items to be consumed: @Progress</p>
-
-<div style="height:100px;">
+<div class="bg-info" style="height:200px;">
+    <p style="font:20px;">Number of items in stack: @Progress</p>
+    <p style="font:20px;">Number of items consumed: @itemCount</p>
     <div class="counter" style="@bar; max-height:100px;">
     </div>
 
 </div>
-<div>
+<div class="mt-2 text-center">
     <button @onclick="StartConsumer">Start</button>
 </div>
 @code {
     [Parameter]
     public int Progress { get; set; }
     private string bar => $"height:{Progress}px;";
+    private int itemCount;
     [Parameter]
     public Manager Manager { get; set; }
 
@@ -24,6 +25,7 @@
         {
             await Manager.LoopConsumer();
             Progress = Manager.Consumer.Items.Count;
+            itemCount++;
             Thread.Sleep(100);
         }
         Progress = Manager.Consumer.Items.Count;
